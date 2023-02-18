@@ -12,7 +12,9 @@ from constants import Directories
 BATCH_SIZE = 3
 
 model_names = [
+    'sentence-transformers/distiluse-base-multilingual-cased-v2',
     'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2',
+    'sentence-transformers/paraphrase-multilingual-mpnet-base-v2',
     'symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli',
     'DMetaSoul/sbert-chinese-general-v2',
     'DMetaSoul/sbert-chinese-general-v2-distill',
