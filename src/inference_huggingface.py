@@ -1,6 +1,5 @@
 # coding: utf-8
 import os
-from itertools import islice
 
 import numpy as np
 import orjson
@@ -13,7 +12,7 @@ from constants import Directories
 
 load_dotenv()
 
-BATCH_SIZE = 3
+BATCH_SIZE = 32
 
 model_names = [
     'sentence-transformers/distiluse-base-multilingual-cased-v2',
@@ -28,7 +27,6 @@ model_names = [
 def inference_file(input_file, output_file, model: SentenceTransformer):
     with open(input_file, encoding='utf_8') as fin, \
             open(output_file, mode='w') as fout:
-        fin = islice(fin, 5)
         for chunk in chunked(fin, BATCH_SIZE):
             lines = [orjson.loads(line) for line in chunk]
             sentence1_list = [j['sentence1'] for j in lines]
