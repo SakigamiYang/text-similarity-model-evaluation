@@ -44,16 +44,22 @@ for model_name in model_names:
     model = SentenceTransformer(model_name, cache_folder=os.environ.get('SENTENCE_TRANSFORMERS_HOME'))
 
     # train
+    logger.info(f'start train result')
     input_file = Directories.DATA / 'train.json'
     output_file = Directories.DATA_RESULT / f'train-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)
+    logger.info(f'finish train result')
 
     # dev
+    logger.info(f'start dev result')
     input_file = Directories.DATA / 'dev.json'
     output_file = Directories.DATA_RESULT / f'dev-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)
+    logger.info(f'finish dev result')
 
     # test
+    logger.info(f'start test result')
     input_file = Directories.DATA / 'test.json'
     output_file = Directories.DATA_RESULT / f'test-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)
+    logger.info(f'finish test result')
