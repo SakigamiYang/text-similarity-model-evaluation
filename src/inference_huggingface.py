@@ -1,13 +1,17 @@
 # coding: utf-8
+import os
 from itertools import islice
 
 import numpy as np
 import orjson
+from dotenv import load_dotenv
 from loguru import logger
 from more_itertools import chunked
 from sentence_transformers import SentenceTransformer
 
 from constants import Directories
+
+load_dotenv()
 
 BATCH_SIZE = 3
 
@@ -24,7 +28,7 @@ model_names = [
 def inference_file(input_file, output_file, model: SentenceTransformer):
     with open(input_file, encoding='utf_8') as fin, \
             open(output_file, mode='w') as fout:
-        fin = islice(fin, 10)
+        fin = islice(fin, 5)
         for chunk in chunked(fin, BATCH_SIZE):
             lines = [orjson.loads(line) for line in chunk]
             sentence1_list = [j['sentence1'] for j in lines]
@@ -39,19 +43,19 @@ def inference_file(input_file, output_file, model: SentenceTransformer):
 
 for model_name in model_names:
     logger.info(f'----- {model_name} -----')
-    model = SentenceTransformer(model_name)
+    model = SentenceTransformer(model_name, cache_folder=os.environ.get('SENTENCE_TRANSFORMERS_HOME'))
 
     # train
     input_file = Directories.DATA / 'train.json'
-    output_file = Directories.DATA / f'train-result-{model_name.replace("/", "_")}.txt'
+    output_file = Directories.DATA_RESULT / f'train-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)
 
     # dev
     input_file = Directories.DATA / 'dev.json'
-    output_file = Directories.DATA / f'dev-result-{model_name.replace("/", "_")}.txt'
+    output_file = Directories.DATA_RESULT / f'dev-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)
 
     # test
     input_file = Directories.DATA / 'test.json'
-    output_file = Directories.DATA / f'test-result-{model_name.replace("/", "_")}.txt'
+    output_file = Directories.DATA_RESULT / f'test-result-{model_name.replace("/", "_")}.txt'
     inference_file(input_file, output_file, model)

@@ -10,4 +10,5 @@ _root = Path(__file__).parent.parent
 
 class Directories:
     DATA = _root / 'data'
+    DATA_RESULT = DATA / 'result'
     DATA_SIMCLUE = DATA / 'simclue_public'
